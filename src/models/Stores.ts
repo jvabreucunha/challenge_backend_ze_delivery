@@ -1,4 +1,4 @@
-import { DataTypes, Model, Sequelize } from 'sequelize';
+import { DataTypes, Model, Sequelize, QueryTypes } from 'sequelize';
 import { IStore } from '../interfaces/IStore';
 
 type StoreCreationAttributes = Omit<IStore, 'id'>;
@@ -32,6 +32,7 @@ class Store extends Model<IStore, StoreCreationAttributes> implements IStore {
                 document: {
                     type: DataTypes.STRING,
                     allowNull: false,
+                    unique: true,
                 },
                 coverageArea: {
                     type: DataTypes.GEOMETRY('MULTIPOLYGON', 4326),
@@ -52,6 +53,37 @@ class Store extends Model<IStore, StoreCreationAttributes> implements IStore {
                 ],
             },
         );
+    }
+
+    static async findNearest(lng: number, lat: number) {
+        const sequelize = this.sequelize!;
+
+        const [result] = await sequelize.query(`
+            SELECT
+                id,
+                "tradingName",
+                "ownerName",
+                document,
+                ST_AsGeoJSON("coverageArea") AS "coverageArea",
+                ST_AsGeoJSON("address") AS "address",
+                ST_Distance(
+                    "address",
+                    ST_SetSRID(ST_MakePoint(:lng, :lat), 4326)
+                ) AS distance
+            FROM stores
+            WHERE ST_Contains(
+                "coverageArea",
+                ST_SetSRID(ST_MakePoint(:lng, :lat), 4326)
+            )
+            ORDER BY distance
+            LIMIT 1;`,
+            {
+                replacements: { lng, lat },
+                type: QueryTypes.SELECT,
+            },
+        );
+
+        return result as IStore & { distance: number };
     }
 }
 
