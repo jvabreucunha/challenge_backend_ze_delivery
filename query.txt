@@ -1,0 +1,27 @@
+SELECT
+    id,
+    "tradingName",
+    "ownerName",
+    document,
+    ST_AsText("coverageArea") AS coverage_area_wkt,
+    ST_AsText("address") AS address_wkt,
+    -- Ponto de teste DENTRO do polígono (-45, -21 é um vértice do MultiPolygon)
+    ST_Covers(
+        "coverageArea",
+        ST_SetSRID(ST_MakePoint(-45, -21), 4326)
+    ) AS ponto_dentro_coverage,
+    -- Distância entre o endereço e o ponto de teste (em metros)
+    ST_Distance(
+        "address"::geography,
+        ST_SetSRID(ST_MakePoint(-45, -21), 4326)::geography
+    ) AS distancia_metros
+FROM
+    stores
+WHERE
+    ST_Covers(
+        "coverageArea",
+        ST_SetSRID(ST_MakePoint(-45, -21), 4326)
+    )
+ORDER BY
+    distancia_metros ASC
+LIMIT 1;
