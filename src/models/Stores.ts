@@ -64,19 +64,29 @@ class Store extends Model<IStore, StoreCreationAttributes> implements IStore {
                 "tradingName",
                 "ownerName",
                 document,
-                ST_AsGeoJSON("coverageArea") AS "coverageArea",
-                ST_AsGeoJSON("address") AS "address",
+                ST_AsText("coverageArea") AS coverage_area_wkt,
+                ST_AsText("address") AS address_wkt,
+                -- Ponto de teste DENTRO do polígono (${lng}, ${lat} é um vértice do MultiPolygon)
+                ST_Covers(
+                    "coverageArea",
+                    ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326)
+                ) AS ponto_dentro_coverage,
+                -- Distância entre o endereço e o ponto de teste (em metros)
                 ST_Distance(
-                    "address",
-                    ST_SetSRID(ST_MakePoint(:lng, :lat), 4326)
-                ) AS distance
-            FROM stores
-            WHERE ST_Contains(
-                "coverageArea",
-                ST_SetSRID(ST_MakePoint(:lng, :lat), 4326)
-            )
-            ORDER BY distance
-            LIMIT 1;`,
+                    "address"::geography,
+                    ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326)::geography
+                ) AS distancia_metros
+            FROM
+                stores
+            WHERE
+                ST_Covers(
+                    "coverageArea",
+                    ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326)
+                )
+            ORDER BY
+                distancia_metros ASC
+            LIMIT 1;
+        `,
             {
                 replacements: { lng, lat },
                 type: QueryTypes.SELECT,
