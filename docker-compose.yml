@@ -1,6 +1,7 @@
 version: '3'
 services:
     api:
+        build: .
         image: dockernode
         container_name: 'app'
         ports:
