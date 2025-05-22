@@ -5,10 +5,10 @@ API para gestão de parceiros com geolocalização, desenvolvida como parte do d
 ## 🧭 Visão Geral
 Esta aplicação oferece uma API RESTful para:
 
--Cadastro de parceiros com informações geoespaciais.
--Consulta de todos os parceiros cadastrados.
--Busca de parceiro por ID.
--Busca do parceiro mais próximo a uma coordenada geográfica.
+- Cadastro de parceiros com informações geoespaciais.
+- Consulta de todos os parceiros cadastrados.
+- Busca de parceiro por ID.
+- Busca do parceiro mais próximo a uma coordenada geográfica.
 
 ## 🌍 Visão Geral
 Solução completa para os requisitos do desafio utilizando:
@@ -19,18 +19,18 @@ Solução completa para os requisitos do desafio utilizando:
 ## 🧰 Stack Tecnológica
 Linguagem: Node.js com TypeScript
 
--Framework: Express
--Banco de Dados: PostgreSQL com extensão PostGIS
--Containerização: Docker
--Balanceamento de Carga: Nginx com Round Robin
--Testes: Jest
+- Framework: Express
+- Banco de Dados: PostgreSQL com extensão PostGIS
+- Containerização: Docker
+- Balanceamento de Carga: Nginx com Round Robin
+- Testes: Jest
 
 
 ## 📦 Endpoints
 
 ### Criar Parceiro
--Rota: POST /stores
--Descrição: Cadastra um novo parceiro.
+- Rota: POST /stores
+- Descrição: Cadastra um novo parceiro.
 
 Body Exemplo:
 ``` json
@@ -52,43 +52,43 @@ Body Exemplo:
 
 #### Respostas:
 
--201 Created: Parceiro cadastrado com sucesso.
--400 Bad Request: Dados inválidos ou formato incorreto.
+- 201 Created: Parceiro cadastrado com sucesso.
+- 400 Bad Request: Dados inválidos ou formato incorreto.
 ---
 ### Listar Todos os Parceiros
--Rota: GET /stores
--Descrição: Retorna uma lista de todos os parceiros cadastrados.
+- Rota: GET /stores
+- Descrição: Retorna uma lista de todos os parceiros cadastrados.
 
 #### Respostas:
 
--200 OK: Lista de parceiros.
--500 Internal Server Error: Erro ao recuperar os dados.
+- 200 OK: Lista de parceiros.
+- 500 Internal Server Error: Erro ao recuperar os dados.
 ---
 
 ### Listar Todos os Parceiros
--Rota: GET /stores
--Descrição: Retorna uma lista de todos os parceiros cadastrados.
+- Rota: GET /stores
+- Descrição: Retorna uma lista de todos os parceiros cadastrados.
 
 #### Respostas:
 
--200 OK: Lista de parceiros.
--500 Internal Server Error: Erro ao recuperar os dados.
+- 200 OK: Lista de parceiros.
+- 500 Internal Server Error: Erro ao recuperar os dados.
 ---
 
 ### Buscar Parceiro por ID
--Rota: GET /stores/:id
--Descrição: Retorna os dados de um parceiro específico pelo ID.
--Parâmetros: id: ID do parceiro.
+- Rota: GET /stores/:id
+- Descrição: Retorna os dados de um parceiro específico pelo ID.
+- Parâmetros: id: ID do parceiro.
 
 #### Respostas:
 
--200 OK: Dados do parceiro.
--404 Not Found: Parceiro não encontrado.
+- 200 OK: Dados do parceiro.
+- 404 Not Found: Parceiro não encontrado.
 ---
 
 ### Buscar Parceiro Mais Próximo
--Rota: POST /stores/search
--Descrição: Retorna o parceiro mais próximo de uma coordenada geográfica fornecida.
+- Rota: POST /stores/search
+- Descrição: Retorna o parceiro mais próximo de uma coordenada geográfica fornecida.
 
 Body Exemplo:
 ``` json
@@ -101,10 +101,10 @@ Body Exemplo:
 #### Respostas:
 Respostas:
 
--200 OK: Dados do parceiro mais próximo.
--400 Bad Request: Coordenadas inválidas.
--404 Not Found: Nenhum parceiro encontrado na área.
--422 Coordenadas devem ser números
+-   200 OK: Dados do parceiro mais próximo.
+-   400 Bad Request: Coordenadas inválidas.
+-   404 Not Found: Nenhum parceiro encontrado na área.
+-   422 Coordenadas devem ser números
 ---
 
 ## 🐳 Docker e Nginx
