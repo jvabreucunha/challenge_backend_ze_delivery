@@ -1,6 +1,8 @@
 services:
     api1:
-        build: .
+        build:
+            context: .
+            dockerfile: Dockerfile
         image: dockernode
         container_name: 'app1'
         ports:
@@ -13,7 +15,9 @@ services:
             - ./:/usr/src
         working_dir: /usr/src/
     api2:
-        build: .
+        build:
+            context: .
+            dockerfile: Dockerfile
         image: dockernode
         container_name: 'app2'
         ports:
